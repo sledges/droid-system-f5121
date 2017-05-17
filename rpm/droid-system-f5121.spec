@@ -34,7 +34,7 @@ fi
 popd
 
 %build
-droid-make -j4 systemtarball
+droid-make -j4 libnfc-nci bluetooth.default_32 systemtarball
 
 # Make a tmp location for built installables
 rm -rf tmp
