@@ -34,7 +34,7 @@ fi
 popd
 
 %build
-droid-make -j4 libnfc-nci bluetooth.default_32 systemtarball
+droid-make %{?_smp_mflags} libnfc-nci bluetooth.default_32 systemtarball
 
 # Make a tmp location for built installables
 rm -rf tmp
@@ -62,6 +62,8 @@ sed -i 's/,2000/,shell/g' tmp/system.files
 # Clean it up if we're on the OBS and need tmpfs build space:
 %if 0%{?_obs_build_project:1}
 rm -rf out
+# HACK: for some reason this file has 000 perms, causing a failure
+chmod +r $RPM_BUILD_ROOT/system/etc/fs_config_files
 %endif
 
 %files -f tmp/system.files
