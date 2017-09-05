@@ -7,14 +7,17 @@
 %define device suzu
 
 Name:          droid-system-f5121
+Provides:      droid-system
 Summary:       Built from source /system for Droid HAL adaptations
 Version:       0.1.1
 Release:       1
 Group:         System
 License:       Proprietary
+%if 0%{?_obs_build_project:1}
 BuildRequires: ubu-trusty
 BuildRequires: sudo-for-abuild
 BuildRequires: droid-src-syspart-full
+%endif
 Source0:       %{name}-%{version}.tgz
 
 %description
@@ -34,7 +37,9 @@ fi
 popd
 
 %build
+%if 0%{?_obs_build_project:1}
 droid-make %{?_smp_mflags} libnfc-nci bluetooth.default_32 systemtarball
+%endif
 
 # Make a tmp location for built installables
 rm -rf tmp
@@ -62,9 +67,9 @@ sed -i 's/,2000/,shell/g' tmp/system.files
 # Clean it up if we're on the OBS and need tmpfs build space:
 %if 0%{?_obs_build_project:1}
 rm -rf out
+%endif
 # HACK: for some reason this file has 000 perms, causing a failure
 chmod +r $RPM_BUILD_ROOT/system/etc/fs_config_files
-%endif
 
 %files -f tmp/system.files
 %defattr(-,root,root,-)
