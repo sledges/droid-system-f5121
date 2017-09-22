@@ -17,6 +17,7 @@ License:       Proprietary
 BuildRequires: ubu-trusty
 BuildRequires: sudo-for-abuild
 BuildRequires: droid-src-syspart-full
+BuildRequires: droid-system-vendor-obsbuild
 %endif
 Source0:       %{name}-%{version}.tgz
 
@@ -28,8 +29,10 @@ Source0:       %{name}-%{version}.tgz
 %setup -T -c -n droid-system-f5121
 sudo chown -R abuild:abuild /home/abuild/src/droid/
 mv /home/abuild/src/droid/* .
+cp -ar /vendor .
 mkdir -p external
 pushd external
+
 tar -zxf %SOURCE0
 if [ -d droid-system-f5121-* ]; then
   mv droid-system-f5121-* droid-system-f5121
